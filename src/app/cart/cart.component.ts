@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { CartService } from '../cart.service';
 
 @Component({
@@ -22,8 +22,23 @@ export class CartComponent implements OnInit {
   ngOnInit(): void {}
 
   onSubmit(): void {
-    this.items = this.cartService.clearCart();
-    console.warn('Your order has been submited !!', this.checkOutForm.value);
-    this.checkOutForm.reset();
+    let isValid = this.validateForm(this.checkOutForm);
+    if (isValid) {
+      this.items = this.cartService.clearCart();
+      console.warn('Your order has been submited !!', this.checkOutForm.value);
+      window.alert('Your order has been submited !!');
+      this.checkOutForm.reset();
+    } else {
+      window.alert(
+        'To complete the purchase, you have to fill in all the data.'
+      );
+    }
+  }
+
+  validateForm(userData: FormGroup): boolean {
+    if (userData.value.name === '' || userData.value.address === '') {
+      return false;
+    }
+    return true;
   }
 }

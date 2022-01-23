@@ -1,12 +1,17 @@
 <h3>Cart</h3>
-<p>
+<p *ngIf="items.length > 0">
   <a routerLink="/shipping">Shipping Price</a>
 </p>
 <div class="cart-item" *ngFor="let item of items">
   <span> {{ item.name }} </span>
   <span> {{ item.price | currency }}</span>
 </div>
-<form [formGroup]="checkOutForm" (ngSubmit)="onSubmit()">
+
+<form
+  *ngIf="items.length > 0"
+  [formGroup]="checkOutForm"
+  (ngSubmit)="onSubmit()"
+>
   <div>
     <label for="name">Name</label>
     <input type="text" id="name" formControlName="name" />
